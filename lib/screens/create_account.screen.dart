@@ -4,24 +4,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram_clone/Widgets/custom_btn.widget.dart';
 import 'package:instagram_clone/Widgets/custom_txt_btn.widget.dart';
 import 'package:instagram_clone/Widgets/text_filed_input.dart';
-import 'package:instagram_clone/screens/create_account.screen.dart';
+import 'package:instagram_clone/screens/login.screen.dart';
 import 'package:instagram_clone/utils/global_var.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class CreateAccountScreen extends StatefulWidget {
+  const CreateAccountScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _bioController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -37,7 +41,50 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Flexible(flex: 2, child: Container()),
               buildAppHeading(),
-              SizedBox(height: 60),
+              SizedBox(height: 40),
+              // Profile Screen
+
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 64,
+                    backgroundImage: NetworkImage(
+                        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyespunjab.com%2Fwp-content%2Fuploads%2F2019%2F06%2FAkshay-Kumar.jpg&f=1&nofb=1"),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        IconlyLight.camera,
+                        color: Colors.black,
+                        size: 32,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 34),
+              TextFieldInputWidget(
+                hintText: "Username",
+                textInputType: TextInputType.text,
+                textEditingController: _usernameController,
+                icon: IconlyLight.profile,
+              ),
+              SizedBox(height: 24),
               TextFieldInputWidget(
                 hintText: "Email",
                 textInputType: TextInputType.emailAddress,
@@ -53,11 +100,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: IconlyLight.password,
               ),
               SizedBox(height: 24),
+              TextFieldInputWidget(
+                hintText: "Enter your bio",
+                textInputType: TextInputType.text,
+                textEditingController: _bioController,
+                icon: IconlyLight.infoSquare,
+              ),
+              SizedBox(height: 24),
               CustomBtnWidget(
-                btnName: "Login",
+                btnName: "Create Account",
                 onPressed: () => print("Login"),
               ),
-              SizedBox(height: 12),
+
               Flexible(flex: 2, child: Container()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
-                      "Don't have an account ? ",
+                      "Already have an account ? ",
                       style: GoogleFonts.poppins(),
                     ),
                   ),
@@ -73,14 +127,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CreateAccountScreen(),
+                        builder: (context) => LoginScreen(),
                       ),
                     ),
-                    textName: "Create Account",
+                    textName: "Login",
                   ),
                 ],
               ),
-              SizedBox(height: 40),
+              // SizedBox(height: 40),
             ],
           ),
         ),
