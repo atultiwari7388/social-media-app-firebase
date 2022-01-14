@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/Screens/home.screen.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/res_layout.screen.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,10 @@ class MyApp extends StatelessWidget {
       title: 'Instagram',
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: const ResponsiveLayout(
+        webScreenLayout: WebScreenLayout(),
+        mobileScreenLayout: MobileScreenLayout(),
+      ),
     );
   }
 }
