@@ -1,0 +1,1 @@
+const APPNAME = 'Instagram';
