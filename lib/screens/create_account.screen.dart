@@ -7,6 +7,9 @@ import 'package:instagram_clone/Widgets/custom_btn.widget.dart';
 import 'package:instagram_clone/Widgets/custom_txt_btn.widget.dart';
 import 'package:instagram_clone/Widgets/text_filed_input.dart';
 import 'package:instagram_clone/resources/auth_method.resource.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/res_layout.screen.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login.screen.dart';
 import 'package:instagram_clone/utils/global_var.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -61,6 +64,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     });
     if (res != 'Success') {
       showSnackBar(res, context);
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }
   }
 
