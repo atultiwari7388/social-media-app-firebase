@@ -7,16 +7,17 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.15.0 <3.0.0"
 dependencies:
+  cloud_firestore: ^3.1.6
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^3.3.5
+  firebase_core: ^1.11.0
+  firebase_storage: ^10.2.5
   flutter:
     sdk: flutter
   flutter_iconly: ^1.0.2
   google_fonts: ^2.2.0
-  cloud_firestore: ^3.1.6
-  cupertino_icons: ^1.0.2
   image_picker: ^0.8.4+4
-  firebase_auth: ^3.3.5
-  firebase_core: ^1.11.0
-  firebase_storage: ^10.2.5
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_lints: ^1.0.0
