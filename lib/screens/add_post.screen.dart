@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models/user.model.dart';
 import 'package:instagram_clone/providers/user.provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +75,25 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(String uid, String userName, String profileImage) {}
+  void postImage(String uid, String userName, String profileImage) async {
+    try {
+      String res = await FireStoreMethod().uploadPost(
+        _descriptionController.text,
+        _file!,
+        uid,
+        userName,
+        profileImage,
+      );
+
+      if (res == "Success") {
+        showSnackBar("Posted", context);
+      } else {
+        showSnackBar(res, context);
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
 
   @override
   void dispose() {
@@ -103,7 +122,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
               actions: [
                 TextButton(
-                  onPressed: postImage,
+                  onPressed: () =>
+                      postImage(user.uid, user.userName, user.profileImage),
                   child: Text(
                     "Post",
                     style: GoogleFonts.poppins(
