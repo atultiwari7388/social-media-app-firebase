@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:instagram_clone/utils/global_var.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -42,13 +44,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: NeverScrollableScrollPhysics(),
-        children: [
-          Text("Home"),
-          Text("Search"),
-          Text("Posts"),
-          Text("Favorites"),
-          Text("Profile"),
-        ],
+        children: HomeScreenItems,
       ),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
@@ -57,6 +53,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         type: BottomNavigationBarType.fixed,
         onTap: navigationTapped,
         currentIndex: _pages,
+        selectedLabelStyle: GoogleFonts.laila(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
         items: [
           BottomNavigationBarItem(
             icon: Icon(
