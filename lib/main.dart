@@ -34,43 +34,38 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Instagram',
-        theme: ThemeData.light(),
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                // Checking if the snapshot has any data or not
-                if (snapshot.hasData) {
-                  // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                  return const ResponsiveLayout(
-                    mobileScreenLayout: MobileScreenLayout(),
-                    webScreenLayout: WebScreenLayout(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                }
-              }
-              // means connection to future hasnt been made yet
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
-                  ),
+    return MaterialApp(
+      title: 'Instagram',
+      theme: ThemeData.light(),
+      debugShowCheckedModeBanner: false,
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              // Checking if the snapshot has any data or not
+              if (snapshot.hasData) {
+                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
+                return const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
                 );
               }
+            }
+            // means connection to future hasnt been made yet
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.green,
+                ),
+              );
+            }
 
-              return const LoginScreen();
-            }),
-      ),
+            return const LoginScreen();
+          }),
     );
   }
 }
