@@ -19,6 +19,7 @@ class FeedScreen extends StatelessWidget {
           APPNAME,
           style: GoogleFonts.lato(color: Colors.black, fontSize: 23.0),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
