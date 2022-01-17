@@ -1,4 +1,4 @@
-# instagram_clone
+# inspire_bharat
 
 A new Flutter project.
 
