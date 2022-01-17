@@ -6,6 +6,7 @@ import 'package:instagram_clone/providers/user.provider.dart';
 import 'package:instagram_clone/responsive/res_layout.screen.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login.screen.dart';
+import 'package:instagram_clone/utils/global_var.dart';
 import 'package:provider/provider.dart';
 
 import 'responsive/mobile_screen_layout.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: MaterialApp(
-        title: 'Instagram',
+        title: APPNAME,
         theme: ThemeData.light(),
         debugShowCheckedModeBanner: false,
         home: StreamBuilder(

@@ -134,63 +134,6 @@
 
 //           // Description and number of comments
 
-//           Container(
-//             padding: EdgeInsets.symmetric(horizontal: 10.0),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   "${widget.snap['likes'].length} Likes",
-//                 ),
-//                 Container(
-//                   child: RichText(
-//                     text: TextSpan(
-//                       style: GoogleFonts.laila(color: primaryColor),
-//                       children: [
-//                         TextSpan(
-//                           text: widget.snap['userName'],
-//                           style: GoogleFonts.lato(
-//                               fontWeight: FontWeight.bold, color: Colors.black),
-//                         ),
-//                         TextSpan(
-//                           text: widget.snap['description'],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-
-//                 // no of comments
-
-//                 InkWell(
-//                   onTap: () {},
-//                   child: Container(
-//                     padding: const EdgeInsets.symmetric(vertical: 4.0),
-//                     child: Text(
-//                       "View all 280 comments",
-//                       style: GoogleFonts.raleway(
-//                         color: Colors.grey,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-
-//                 //datetime
-
-//                 Container(
-//                   padding: const EdgeInsets.symmetric(vertical: 4.0),
-//                   child: Text(
-//                     DateFormat.yMMMd()
-//                         .format(widget.snap['datePublished'].toDate()),
-//                     style: GoogleFonts.raleway(
-//                       color: Colors.grey,
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
 //         ],
 //       ),
 //     );
@@ -198,9 +141,16 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:instagram_clone/Widgets/like_animations.widget.dart';
+import 'package:instagram_clone/models/user.model.dart';
+import 'package:instagram_clone/providers/user.provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({Key? key, required this.snap}) : super(key: key);
@@ -208,6 +158,8 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -224,8 +176,24 @@ class PostCard extends StatelessWidget {
           TopSection(snap: snap),
           Row(
             children: [
-              IconButton(
-                  onPressed: () {}, icon: FaIcon(FontAwesomeIcons.heart)),
+              LikeAnimation(
+                isAnimating: snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                    onPressed: () async {
+                      await FireStoreMethod().likePost(
+                        snap["postId"],
+                        user.uid,
+                        snap["likes"],
+                      );
+                    },
+                    icon: snap['likes'].contains(user.uid)
+                        ? Icon(
+                            IconlyBold.heart,
+                            color: Colors.red,
+                          )
+                        : Icon(IconlyLight.heart)),
+              ),
               IconButton(
                   onPressed: () {}, icon: FaIcon(FontAwesomeIcons.comment)),
               IconButton(
@@ -242,12 +210,59 @@ class PostCard extends StatelessWidget {
             ],
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Text(
-              DateFormat.yMMMd().format(snap['datePublished'].toDate()),
-              style: GoogleFonts.raleway(
-                color: Colors.grey,
-              ),
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${snap['likes'].length} Likes",
+                ),
+                Container(
+                  child: RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.laila(color: primaryColor),
+                      children: [
+                        TextSpan(
+                          text: "${snap['userName']}   ",
+                          style: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        TextSpan(
+                          text: "${snap['description']}",
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // no of comments
+
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      "View all 280 comments",
+                      style: GoogleFonts.raleway(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+
+                //datetime
+
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    style: GoogleFonts.raleway(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -256,7 +271,7 @@ class PostCard extends StatelessWidget {
   }
 }
 
-class TopSection extends StatelessWidget {
+class TopSection extends StatefulWidget {
   const TopSection({
     Key? key,
     required this.snap,
@@ -265,15 +280,59 @@ class TopSection extends StatelessWidget {
   final snap;
 
   @override
+  State<TopSection> createState() => _TopSectionState();
+}
+
+class _TopSectionState extends State<TopSection> {
+  bool isLikeAnimating = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: snap['postUrl'],
-      child: AspectRatio(
-        aspectRatio: 4 / 3.5,
-        child: Image.network(
-          snap['postUrl'],
-          fit: BoxFit.cover,
-        ),
+    final User user = Provider.of<UserProvider>(context).getUser;
+    return GestureDetector(
+      onDoubleTap: () async {
+        await FireStoreMethod().likePost(
+          widget.snap["postId"],
+          user.uid,
+          widget.snap["likes"],
+        );
+
+        setState(() {
+          isLikeAnimating = true;
+        });
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Hero(
+            tag: widget.snap['postUrl'],
+            child: AspectRatio(
+              aspectRatio: 4 / 3.5,
+              child: Image.network(
+                widget.snap['postUrl'],
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          AnimatedOpacity(
+            duration: Duration(milliseconds: 200),
+            opacity: isLikeAnimating ? 1 : 0,
+            child: LikeAnimation(
+              child: Icon(
+                IconlyBold.heart,
+                color: Colors.red,
+                size: 70,
+              ),
+              isAnimating: isLikeAnimating,
+              duration: Duration(milliseconds: 400),
+              onEnd: () {
+                setState(() {
+                  isLikeAnimating = false;
+                });
+              },
+            ),
+          )
+        ],
       ),
     );
   }
