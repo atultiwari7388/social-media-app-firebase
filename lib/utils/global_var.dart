@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/add_post.screen.dart';
+import 'package:instagram_clone/screens/feed_ui.screen.dart';
 
-const APPNAME = 'Instagram';
+const APPNAME = 'Inspire Bharat';
 
 const HomeScreenItems = [
-  Text("Home"),
+  FeedScreen(),
   Text("Search"),
   AddPostScreen(),
   Text("Favorites"),
