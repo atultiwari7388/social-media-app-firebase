@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({Key? key}) : super(key: key);
+  const CommentCard({Key? key, required this.snap}) : super(key: key);
+  final snap;
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -15,10 +17,13 @@ class _CommentCardState extends State<CommentCard> {
       padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16.0),
       child: Row(
         children: [
-          CircleAvatar(),
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            backgroundImage: NetworkImage(widget.snap["profileImage"]),
+          ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0),
+              padding: const EdgeInsets.only(left: 14.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -28,16 +33,16 @@ class _CommentCardState extends State<CommentCard> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "Username ",
+                          text: "@${widget.snap['userName']} ",
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Colors.grey,
                           ),
                         ),
                         TextSpan(
-                          text: "Some Description ",
+                          text: "  ${widget.snap["text"]}",
                           style: GoogleFonts.lato(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),
@@ -47,12 +52,28 @@ class _CommentCardState extends State<CommentCard> {
                   // description
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
-                      "23/12/2021",
-                      style: GoogleFonts.laila(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          DateFormat.yMMMEd()
+                              .format(widget.snap["datePublished"].toDate())
+                              .toString(),
+                          style: GoogleFonts.laila(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          DateFormat.Hms()
+                              .format(widget.snap["datePublished"].toDate())
+                              .toString(),
+                          style: GoogleFonts.laila(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   //like button

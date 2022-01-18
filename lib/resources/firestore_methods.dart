@@ -70,7 +70,6 @@ class FireStoreMethod {
   }
 
   // store comments in firebase firestore
-
   Future<void> postComment(
     String postId,
     String text,
@@ -98,6 +97,15 @@ class FireStoreMethod {
       } else {
         showSnackBar("Text is Empty", context);
       }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+//delete posts
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection("posts").doc(postId).delete();
     } catch (e) {
       print(e.toString());
     }
