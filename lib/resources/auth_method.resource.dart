@@ -19,6 +19,7 @@ class AuthMethods {
 
   // create account user
   Future<String> createUserAccount({
+    required String name,
     required String email,
     required String password,
     required String bio,
@@ -30,6 +31,7 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           bio.isNotEmpty ||
+          name.isNotEmpty ||
           userName.isNotEmpty ||
           // ignore: unnecessary_null_comparison
           file != null) {
@@ -45,6 +47,7 @@ class AuthMethods {
         //import usermodel data
         model.User user = model.User(
           uid: _userCredential.user!.uid,
+          name: name,
           userName: userName,
           email: email,
           bio: bio,

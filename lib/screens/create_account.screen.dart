@@ -26,6 +26,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
 
@@ -35,6 +36,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -57,6 +59,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       bio: _bioController.text,
       userName: _usernameController.text,
       file: _image!,
+      name: _nameController.text,
     );
     // print(res);
     setState(() {
@@ -138,6 +141,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         ],
                       ),
                       SizedBox(height: 34),
+                      TextFieldInputWidget(
+                        hintText: "Enter your name",
+                        textInputType: TextInputType.text,
+                        textEditingController: _nameController,
+                        icon: IconlyLight.profile,
+                      ),
+                      SizedBox(height: 24),
                       TextFieldInputWidget(
                         hintText: "Username",
                         textInputType: TextInputType.text,
