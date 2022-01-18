@@ -76,13 +76,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(String uid, String userName, String profileImage) async {
+  void postImage(
+      String uid, String userName, String profileImage, String name) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
       String res = await FireStoreMethod().uploadPost(
+        name,
         _descriptionController.text,
         _file!,
         uid,
@@ -140,8 +142,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
               actions: [
                 TextButton(
-                  onPressed: () =>
-                      postImage(user.uid, user.userName, user.profileImage),
+                  onPressed: () => postImage(
+                    user.uid,
+                    user.userName,
+                    user.profileImage,
+                    user.name,
+                  ),
                   child: Text(
                     "Post",
                     style: GoogleFonts.poppins(

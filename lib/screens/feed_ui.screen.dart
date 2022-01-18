@@ -45,70 +45,72 @@ class FeedScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               var data = snapshot.data!.docs[index].data();
 
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostCard(
-                        snap: data,
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  margin: const EdgeInsets.all(4.0),
-                  height: 230,
-                  width: double.infinity,
-                  child: Stack(
-                    alignment: Alignment.topLeft,
-                    children: [
-                      Hero(
-                        tag: data["postUrl"],
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.0),
-                            image: DecorationImage(
-                              image: NetworkImage(data["postUrl"]),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 10,
-                        left: 0,
-                        right: 10,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            data["description"],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: GoogleFonts.lato(
-                              color: Colors.white,
-                              fontSize: 26.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: -4,
-                        left: -4,
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                            data["profileImage"],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
+              return PostCard(snap: data);
+
+              // return GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => PostCard(
+              //           snap: data,
+              //         ),
+              //       ),
+              //     );
+              //   },
+              //   child: Container(
+              //     padding: const EdgeInsets.all(4.0),
+              //     margin: const EdgeInsets.all(4.0),
+              //     height: 230,
+              //     width: double.infinity,
+              //     child: Stack(
+              //       alignment: Alignment.topLeft,
+              //       children: [
+              //         Hero(
+              //           tag: data["postUrl"],
+              //           child: Container(
+              //             width: double.infinity,
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(15.0),
+              //               image: DecorationImage(
+              //                 image: NetworkImage(data["postUrl"]),
+              //                 fit: BoxFit.cover,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Positioned(
+              //           bottom: 10,
+              //           left: 0,
+              //           right: 10,
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(8.0),
+              //             child: Text(
+              //               data["description"],
+              //               overflow: TextOverflow.ellipsis,
+              //               maxLines: 1,
+              //               style: GoogleFonts.lato(
+              //                 color: Colors.white,
+              //                 fontSize: 26.0,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         Positioned(
+              //           top: -4,
+              //           left: -4,
+              //           child: CircleAvatar(
+              //             radius: 30,
+              //             backgroundImage: NetworkImage(
+              //               data["profileImage"],
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // );
             },
           );
         },

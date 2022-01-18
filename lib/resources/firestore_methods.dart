@@ -1,16 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:instagram_clone/models/post.model.dart';
 import 'package:instagram_clone/resources/storage_method.resources.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethod {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //upload post
-
   Future<String> uploadPost(
+    String name,
     String description,
     Uint8List file,
     String uid,
@@ -27,6 +29,7 @@ class FireStoreMethod {
       //create post
 
       Post post = Post(
+        name: name,
         description: description,
         uid: uid,
         userName: userName,
@@ -48,7 +51,7 @@ class FireStoreMethod {
     return res;
   }
 
-  // like animation
+  // add likes in firebase firestore
 
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
@@ -60,6 +63,40 @@ class FireStoreMethod {
         await _firestore.collection("posts").doc(postId).update({
           'likes': FieldValue.arrayUnion([uid])
         });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  // store comments in firebase firestore
+
+  Future<void> postComment(
+    String postId,
+    String text,
+    String uid,
+    String userName,
+    String profileImage,
+    BuildContext context,
+  ) async {
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection("posts")
+            .doc(postId)
+            .collection("comments")
+            .doc(commentId)
+            .set({
+          "profileImage": profileImage,
+          "userName": userName,
+          "uid": uid,
+          "text": text,
+          "datePublished": DateTime.now(),
+          "commentId": commentId,
+        });
+      } else {
+        showSnackBar("Text is Empty", context);
       }
     } catch (e) {
       print(e.toString());
