@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram_clone/Widgets/comment_card.widget.dart';
@@ -41,7 +42,29 @@ class _CommentScreenState extends State<CommentScreen> {
           ),
         ),
       ),
-      body: CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("posts")
+            .doc(widget.snap["postId"])
+            .collection("comments")
+            .orderBy("datePublished", descending: true)
+            .snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var data = snapshot.data!.docs[index].data();
+              return CommentCard(
+                snap: data,
+              );
+            },
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -77,6 +100,9 @@ class _CommentScreenState extends State<CommentScreen> {
                     user.profileImage,
                     context,
                   );
+                  setState(() {
+                    _commentController.text = "";
+                  });
                 },
               ),
             ],
