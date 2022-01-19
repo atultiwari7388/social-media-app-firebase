@@ -90,4 +90,10 @@ class AuthMethods {
     }
     return res;
   }
+
+//signout
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
 }

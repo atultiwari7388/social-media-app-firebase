@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:instagram_clone/Widgets/follow_btn.widget.dart';
+import 'package:instagram_clone/resources/auth_method.resource.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/screens/login.screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 
@@ -125,9 +128,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ? FollowButtonWidget(
                                             backgroundColor: Colors.white,
                                             borderColor: Colors.grey,
-                                            text: "Edit Profile",
+                                            text: "Sign out",
                                             textColor: primaryColor,
-                                            function: () {},
+                                            function: () async {
+                                              await AuthMethods().signOut();
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginScreen(),
+                                                ),
+                                              );
+                                            },
                                           )
                                         : isFollowing
                                             ? FollowButtonWidget(
@@ -135,14 +147,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 borderColor: Colors.grey,
                                                 text: "Unfollow",
                                                 textColor: primaryColor,
-                                                function: () {},
+                                                function: () async {
+                                                  await FireStoreMethod()
+                                                      .followUser(
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    userData["uid"],
+                                                  );
+                                                  setState(() {
+                                                    isFollowing = false;
+                                                    followers--;
+                                                  });
+                                                },
                                               )
                                             : FollowButtonWidget(
                                                 backgroundColor: primaryColor,
                                                 borderColor: Colors.blue,
                                                 text: "Follow",
                                                 textColor: Colors.white,
-                                                function: () {},
+                                                function: () async {
+                                                  await FireStoreMethod()
+                                                      .followUser(
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    userData["uid"],
+                                                  );
+                                                  setState(() {
+                                                    isFollowing = true;
+                                                    followers++;
+                                                  });
+                                                },
                                               )
                                   ],
                                 ),
