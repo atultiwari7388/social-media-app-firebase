@@ -172,10 +172,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .currentUser!.uid,
                                                     userData["uid"],
                                                   );
-                                                  setState(() {
-                                                    isFollowing = true;
-                                                    followers++;
-                                                  });
+                                                  setState(
+                                                    () {
+                                                      isFollowing = true;
+                                                      followers++;
+                                                    },
+                                                  );
                                                 },
                                               )
                                   ],
@@ -265,9 +267,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Text(
             lable,
             style: GoogleFonts.lato(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black87),
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+            ),
           ),
         ),
       ],
