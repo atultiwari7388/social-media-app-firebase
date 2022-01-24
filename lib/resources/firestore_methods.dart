@@ -51,7 +51,7 @@ class FireStoreMethod {
     return res;
   }
 
-  // add likes in firebase firestore
+  // add post likes in firebase firestore
 
   Future<void> likePost(String postId, String uid, List likes) async {
     try {
@@ -106,6 +106,37 @@ class FireStoreMethod {
   Future<void> deletePost(String postId) async {
     try {
       await _firestore.collection("posts").doc(postId).delete();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  //follow users
+
+  Future<void> followUser(String uid, String followUserId) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection("users").doc(uid).get();
+      List following = (snap.data()! as dynamic)["following"];
+
+      if (following.contains(followUserId)) {
+        //remove followers
+        await _firestore.collection("users").doc(followUserId).update({
+          "followers": FieldValue.arrayRemove([uid])
+        });
+
+        await _firestore.collection("users").doc(uid).update({
+          "following": FieldValue.arrayRemove([followUserId])
+        });
+      } else {
+        await _firestore.collection("users").doc(followUserId).update({
+          "followers": FieldValue.arrayUnion([uid])
+        });
+
+        await _firestore.collection("users").doc(uid).update({
+          "following": FieldValue.arrayUnion([followUserId])
+        });
+      }
     } catch (e) {
       print(e.toString());
     }
