@@ -1,4 +1,4 @@
-# inspire_bharat
+# Social Media App (Instagram_Clone)
 
 A new Flutter project.
 
