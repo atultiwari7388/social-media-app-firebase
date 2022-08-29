@@ -27,6 +27,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  bool showPassword = true;
   Uint8List? _image;
   bool _isLoading = false;
 
@@ -109,7 +110,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               : CircleAvatar(
                                   radius: 64,
                                   backgroundImage:
-                                      AssetImage('assets/profile.png'),
+                                      AssetImage('assets/newlogo.jpg'),
                                 ),
                           Positioned(
                             bottom: 0,
@@ -166,7 +167,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         hintText: "Enter your password",
                         textInputType: TextInputType.visiblePassword,
                         textEditingController: _passwordController,
-                        isPass: true,
+                        isPass: showPassword,
                         icon: IconlyLight.password,
                       ),
                       SizedBox(height: 24),
@@ -175,12 +176,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         textInputType: TextInputType.text,
                         textEditingController: _bioController,
                         icon: IconlyLight.infoSquare,
+                        maxLine: 1,
                       ),
                       SizedBox(height: 24),
                       CustomBtnWidget(
                         btnName: "Create Account",
                         onPressed: signupUser,
                       ),
+                      SizedBox(height: 24),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

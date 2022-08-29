@@ -8,6 +8,7 @@ class TextFieldInputWidget extends StatelessWidget {
     required this.textInputType,
     required this.icon,
     this.isPass = false,
+    this.maxLine = 1,
   }) : super(key: key);
 
   final String hintText;
@@ -15,14 +16,16 @@ class TextFieldInputWidget extends StatelessWidget {
   final bool isPass;
   final TextInputType textInputType;
   final IconData icon;
+  final int maxLine;
 
   @override
   Widget build(BuildContext context) {
     final inputBorder =
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
 
-    return TextField(
+    return TextFormField(
       controller: textEditingController,
+      maxLines: maxLine,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.black),
         hintText: hintText,

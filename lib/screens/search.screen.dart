@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -98,13 +100,29 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   itemBuilder: (context, index) {
                     var data = snapshot.data!.docs[index];
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          data["postUrl"],
-                          fit: BoxFit.cover,
+                    return CachedNetworkImage(
+                      imageUrl: data["postUrl"],
+                      fit: BoxFit.cover,
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => GFShimmer(
+                        mainColor: Colors.grey,
+                        secondaryColor: Colors.grey.shade300,
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(17),
+                          ),
                         ),
                       ),
                     );

@@ -78,13 +78,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              _pages == 3 ? IconlyBold.heart : IconlyLight.heart,
-            ),
-            label: "Favorite",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _pages == 4 ? IconlyBold.profile : IconlyLight.profile,
+              _pages == 3 ? IconlyBold.profile : IconlyLight.profile,
             ),
             label: "Profile",
           ),

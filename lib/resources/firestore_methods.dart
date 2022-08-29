@@ -46,6 +46,7 @@ class FireStoreMethod {
       res = "success";
     } catch (e) {
       print(e.toString());
+      res = e.toString();
     }
 
     return res;

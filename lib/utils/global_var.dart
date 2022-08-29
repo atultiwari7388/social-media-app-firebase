@@ -5,12 +5,11 @@ import 'package:instagram_clone/screens/feed_ui.screen.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/screens/search.screen.dart';
 
-const APPNAME = 'Inspire Bharat';
+const APPNAME = 'Social People';
 
 List<Widget> HomeScreenItems = [
-  FeedScreen(),
+  FeedScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   SearchScreen(),
   AddPostScreen(),
-  Text("Favorites"),
   ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid)
 ];

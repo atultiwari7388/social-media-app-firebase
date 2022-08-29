@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,36 +18,35 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
-  final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
+  final TextEditingController _descriptionController = TextEditingController();
 
   //select image
-  _selectImage(BuildContext context) async {
+  _selectImage(BuildContext parentContext) async {
     return showDialog(
-      context: context,
-      builder: (context) {
+      context: parentContext,
+      builder: (BuildContext context) {
         return SimpleDialog(
           title: Text("Create a Post"),
           children: [
             // for camera
             SimpleDialogOption(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                "Take a Photo",
-                style: GoogleFonts.laila(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.black,
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  "Take a Photo",
+                  style: GoogleFonts.laila(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(ImageSource.camera);
-                setState(() {
-                  _file = file;
-                });
-              },
-            ),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  Uint8List file = await pickImage(ImageSource.camera);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
 
             // for gallery
 
@@ -76,8 +74,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(
-      String uid, String userName, String profileImage, String name) async {
+  void postImage(String uid, String userName, String profileImage, name) async {
     setState(() {
       _isLoading = true;
     });
@@ -117,7 +114,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   void clearPostScreen() {
     setState(() {
-      _file = null;
+      _file!.clear();
+      print("Clear Screen");
     });
   }
 
